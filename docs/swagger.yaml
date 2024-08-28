@@ -1,0 +1,273 @@
+basePath: /v1
+definitions:
+  controller_common.SingleErrorMessage:
+    properties:
+      message:
+        type: string
+    type: object
+  fiber.Map:
+    additionalProperties: true
+    type: object
+  user_models.CreateUser:
+    properties:
+      address:
+        minLength: 6
+        type: string
+      discountPercentage:
+        type: integer
+      email:
+        maxLength: 64
+        minLength: 6
+        type: string
+      firstName:
+        maxLength: 64
+        minLength: 3
+        type: string
+      isAdmin:
+        type: boolean
+      lastName:
+        maxLength: 64
+        minLength: 3
+        type: string
+      password:
+        minLength: 6
+        type: string
+      phone:
+        maxLength: 64
+        minLength: 6
+        type: string
+    required:
+    - address
+    - email
+    - firstName
+    - lastName
+    - password
+    - phone
+    type: object
+  user_models.Login:
+    properties:
+      email:
+        maxLength: 64
+        minLength: 6
+        type: string
+      password:
+        minLength: 6
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  user_models.LoginResponse:
+    properties:
+      token:
+        type: string
+    type: object
+  user_models.User:
+    properties:
+      address:
+        maxLength: 64
+        minLength: 6
+        type: string
+      discountPercentage:
+        type: integer
+      email:
+        maxLength: 64
+        minLength: 6
+        type: string
+      firstName:
+        maxLength: 64
+        minLength: 3
+        type: string
+      isAdmin:
+        type: boolean
+      lastName:
+        maxLength: 64
+        minLength: 3
+        type: string
+      password:
+        maxLength: 64
+        minLength: 6
+        type: string
+      phone:
+        maxLength: 64
+        minLength: 6
+        type: string
+    required:
+    - address
+    - email
+    - firstName
+    - lastName
+    - password
+    - phone
+    type: object
+  utils.Pagination:
+    properties:
+      data: {}
+      limit:
+        type: integer
+      next:
+        type: integer
+      page:
+        type: integer
+      prev:
+        type: integer
+      total:
+        type: integer
+      totalPages:
+        type: integer
+    type: object
+info:
+  contact: {}
+  description: This is Evolution Fitness Store API.
+  title: Evolution Fitness Store API
+  version: "1.0"
+paths:
+  /login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/user_models.Login'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user_models.LoginResponse'
+        "400":
+          description: Invalid request format
+          schema:
+            $ref: '#/definitions/fiber.Map'
+        "401":
+          description: Unauthorized (Invalid email or password)
+          schema:
+            $ref: '#/definitions/fiber.Map'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/fiber.Map'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/controller_common.SingleErrorMessage'
+      summary: Log in a user
+      tags:
+      - Users
+  /register:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/user_models.CreateUser'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created user
+          schema:
+            $ref: '#/definitions/user_models.User'
+        "400":
+          description: Invalid request format or validation error
+          schema:
+            $ref: '#/definitions/fiber.Map'
+        "500":
+          description: Failed to hash password or create user
+          schema:
+            $ref: '#/definitions/fiber.Map'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/controller_common.SingleErrorMessage'
+      summary: Create a new user
+      tags:
+      - Users
+  /users:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Filter users by discount percentage
+        in: query
+        name: discount_percentage
+        type: integer
+      - default: 1
+        description: Page number for pagination
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Limit of results per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Paginated list of users
+          schema:
+            $ref: '#/definitions/utils.Pagination'
+        "500":
+          description: Failed to fetch users
+          schema:
+            $ref: '#/definitions/fiber.Map'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/controller_common.SingleErrorMessage'
+      security:
+      - BearerAuth: []
+      summary: List users
+      tags:
+      - Users
+  /users/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User details
+          schema:
+            $ref: '#/definitions/user_models.User'
+        "400":
+          description: User ID is required
+          schema:
+            $ref: '#/definitions/fiber.Map'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/fiber.Map'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/controller_common.SingleErrorMessage'
+      security:
+      - BearerAuth: []
+      summary: Get user by ID
+      tags:
+      - Users
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
