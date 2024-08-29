@@ -42,8 +42,7 @@ func NewServer() Server {
 				fiber.MethodDelete,
 				fiber.MethodPatch,
 			}, ","),
-			AllowHeaders:     "*",
-			AllowCredentials: true},
+			AllowHeaders: "*"},
 		))
 	}
 

@@ -92,7 +92,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/user_models.CreateUser"
+                            "$ref": "#/definitions/user_models.User"
                         }
                     }
                 ],
@@ -111,67 +111,6 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "Failed to hash password or create user",
-                        "schema": {
-                            "$ref": "#/definitions/fiber.Map"
-                        }
-                    },
-                    "default": {
-                        "description": "An unexpected error response.",
-                        "schema": {
-                            "$ref": "#/definitions/controller_common.SingleErrorMessage"
-                        }
-                    }
-                }
-            }
-        },
-        "/users": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Users"
-                ],
-                "summary": "List users",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Filter users by discount percentage",
-                        "name": "discount_percentage",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "default": 1,
-                        "description": "Page number for pagination",
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "default": 10,
-                        "description": "Limit of results per page",
-                        "name": "limit",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Paginated list of users",
-                        "schema": {
-                            "$ref": "#/definitions/utils.Pagination"
-                        }
-                    },
-                    "500": {
-                        "description": "Failed to fetch users",
                         "schema": {
                             "$ref": "#/definitions/fiber.Map"
                         }
@@ -253,53 +192,6 @@ const docTemplate = `{
             "type": "object",
             "additionalProperties": true
         },
-        "user_models.CreateUser": {
-            "type": "object",
-            "required": [
-                "address",
-                "email",
-                "firstName",
-                "lastName",
-                "password",
-                "phone"
-            ],
-            "properties": {
-                "address": {
-                    "type": "string",
-                    "minLength": 6
-                },
-                "discountPercentage": {
-                    "type": "integer"
-                },
-                "email": {
-                    "type": "string",
-                    "maxLength": 64,
-                    "minLength": 6
-                },
-                "firstName": {
-                    "type": "string",
-                    "maxLength": 64,
-                    "minLength": 3
-                },
-                "isAdmin": {
-                    "type": "boolean"
-                },
-                "lastName": {
-                    "type": "string",
-                    "maxLength": 64,
-                    "minLength": 3
-                },
-                "password": {
-                    "type": "string",
-                    "minLength": 6
-                },
-                "phone": {
-                    "type": "string",
-                    "maxLength": 64,
-                    "minLength": 6
-                }
-            }
-        },
         "user_models.Login": {
             "type": "object",
             "required": [
@@ -329,73 +221,19 @@ const docTemplate = `{
         "user_models.User": {
             "type": "object",
             "required": [
-                "address",
                 "email",
-                "firstName",
-                "lastName",
-                "password",
-                "phone"
+                "password"
             ],
             "properties": {
-                "address": {
-                    "type": "string",
-                    "maxLength": 64,
-                    "minLength": 6
-                },
-                "discountPercentage": {
-                    "type": "integer"
-                },
                 "email": {
                     "type": "string",
                     "maxLength": 64,
                     "minLength": 6
                 },
-                "firstName": {
-                    "type": "string",
-                    "maxLength": 64,
-                    "minLength": 3
-                },
-                "isAdmin": {
-                    "type": "boolean"
-                },
-                "lastName": {
-                    "type": "string",
-                    "maxLength": 64,
-                    "minLength": 3
-                },
                 "password": {
                     "type": "string",
                     "maxLength": 64,
                     "minLength": 6
-                },
-                "phone": {
-                    "type": "string",
-                    "maxLength": 64,
-                    "minLength": 6
-                }
-            }
-        },
-        "utils.Pagination": {
-            "type": "object",
-            "properties": {
-                "data": {},
-                "limit": {
-                    "type": "integer"
-                },
-                "next": {
-                    "type": "integer"
-                },
-                "page": {
-                    "type": "integer"
-                },
-                "prev": {
-                    "type": "integer"
-                },
-                "total": {
-                    "type": "integer"
-                },
-                "totalPages": {
-                    "type": "integer"
                 }
             }
         }
@@ -415,8 +253,8 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "",
 	BasePath:         "/v1",
 	Schemes:          []string{},
-	Title:            "Evolution Fitness Store API",
-	Description:      "This is Evolution Fitness Store API.",
+	Title:            "Go Pancake Swap API",
+	Description:      "This is Go Pancake Swap API.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 }

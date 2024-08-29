@@ -9,9 +9,9 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 )
 
-// @title                      Evolution Fitness Store API
+// @title                      Go Pancake Swap API
 // @version                    1.0
-// @description                This is Evolution Fitness Store API.
+// @description                This is Go Pancake Swap API.
 // @BasePath                   /v1
 // @securityDefinitions.apikey BearerAuth
 // @in                         header

@@ -35,7 +35,6 @@ func SetupV1Routes(app *fiber.App) error {
 
 	//users
 	api := app.Group("/v1", middlewares.AuthRequired())
-	api.Get("/users", userController.ListUsers)
 	api.Get("/users/:id", userController.GetUser)
 
 	defer log.Println("successfully started v1 routes!")

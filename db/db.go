@@ -76,7 +76,7 @@ func Connect(disableLogs bool) (*DatabaseCli, error) {
 
 	host := utils.GetEnv("DB_HOST", "localhost")
 	port := utils.GetEnv("DB_PORT", "5432")
-	dbName := utils.GetEnv("DB_NAME", "evolution_fitness")
+	dbName := utils.GetEnv("DB_NAME", "go-pancake")
 	username := utils.GetEnv("DB_USERNAME", "postgres")
 	password := utils.GetEnv("DB_PASSWORD", "postgres")
 

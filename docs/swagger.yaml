@@ -8,42 +8,6 @@ definitions:
   fiber.Map:
     additionalProperties: true
     type: object
-  user_models.CreateUser:
-    properties:
-      address:
-        minLength: 6
-        type: string
-      discountPercentage:
-        type: integer
-      email:
-        maxLength: 64
-        minLength: 6
-        type: string
-      firstName:
-        maxLength: 64
-        minLength: 3
-        type: string
-      isAdmin:
-        type: boolean
-      lastName:
-        maxLength: 64
-        minLength: 3
-        type: string
-      password:
-        minLength: 6
-        type: string
-      phone:
-        maxLength: 64
-        minLength: 6
-        type: string
-    required:
-    - address
-    - email
-    - firstName
-    - lastName
-    - password
-    - phone
-    type: object
   user_models.Login:
     properties:
       email:
@@ -64,62 +28,22 @@ definitions:
     type: object
   user_models.User:
     properties:
-      address:
-        maxLength: 64
-        minLength: 6
-        type: string
-      discountPercentage:
-        type: integer
       email:
         maxLength: 64
         minLength: 6
-        type: string
-      firstName:
-        maxLength: 64
-        minLength: 3
-        type: string
-      isAdmin:
-        type: boolean
-      lastName:
-        maxLength: 64
-        minLength: 3
         type: string
       password:
         maxLength: 64
         minLength: 6
         type: string
-      phone:
-        maxLength: 64
-        minLength: 6
-        type: string
     required:
-    - address
     - email
-    - firstName
-    - lastName
     - password
-    - phone
-    type: object
-  utils.Pagination:
-    properties:
-      data: {}
-      limit:
-        type: integer
-      next:
-        type: integer
-      page:
-        type: integer
-      prev:
-        type: integer
-      total:
-        type: integer
-      totalPages:
-        type: integer
     type: object
 info:
   contact: {}
-  description: This is Evolution Fitness Store API.
-  title: Evolution Fitness Store API
+  description: This is Go Pancake Swap API.
+  title: Go Pancake Swap API
   version: "1.0"
 paths:
   /login:
@@ -169,7 +93,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/user_models.CreateUser'
+          $ref: '#/definitions/user_models.User'
       produces:
       - application/json
       responses:
@@ -190,45 +114,6 @@ paths:
           schema:
             $ref: '#/definitions/controller_common.SingleErrorMessage'
       summary: Create a new user
-      tags:
-      - Users
-  /users:
-    get:
-      consumes:
-      - application/json
-      parameters:
-      - description: Filter users by discount percentage
-        in: query
-        name: discount_percentage
-        type: integer
-      - default: 1
-        description: Page number for pagination
-        in: query
-        name: page
-        type: integer
-      - default: 10
-        description: Limit of results per page
-        in: query
-        name: limit
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Paginated list of users
-          schema:
-            $ref: '#/definitions/utils.Pagination'
-        "500":
-          description: Failed to fetch users
-          schema:
-            $ref: '#/definitions/fiber.Map'
-        default:
-          description: An unexpected error response.
-          schema:
-            $ref: '#/definitions/controller_common.SingleErrorMessage'
-      security:
-      - BearerAuth: []
-      summary: List users
       tags:
       - Users
   /users/{id}:
