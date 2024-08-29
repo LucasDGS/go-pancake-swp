@@ -1,18 +1,16 @@
-package user_controller
+package user
 
 import (
 	"strconv"
 
 	"github.com/LucasDGS/go-pancake-swp/db"
-	"github.com/LucasDGS/go-pancake-swp/modules/user/user_models"
-	"github.com/LucasDGS/go-pancake-swp/modules/user/user_repository"
 	"github.com/LucasDGS/go-pancake-swp/utils"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 )
 
 type UserController struct {
-	userRepository user_repository.IUserRepository
+	userRepository IUserRepository
 }
 
 func NewUserController() (UserController, error) {
@@ -21,7 +19,7 @@ func NewUserController() (UserController, error) {
 		return UserController{}, err
 	}
 
-	userRepository, err := user_repository.NewUserRepository(db)
+	userRepository, err := NewUserRepository(db)
 	if err != nil {
 		return UserController{}, err
 	}
@@ -37,21 +35,21 @@ func NewUserController() (UserController, error) {
 // @Tags Users
 // @Accept  json
 // @Produce json
-// @Param   body             body user_models.Login true "Request Body"
-// @Success 200 {object}     user_models.LoginResponse
+// @Param   body             body user.Login true "Request Body"
+// @Success 200 {object}     user.LoginResponse
 // @Failure 400 {object}     fiber.Map "Invalid request format"
 // @Failure 401 {object}     fiber.Map "Unauthorized (Invalid email or password)"
 // @Failure 404 {object}     fiber.Map "User not found"
 // @Failure default {object} controller_common.SingleErrorMessage "An unexpected error response."
 // @Router  /login [post]
 func (uc UserController) Login(c *fiber.Ctx) error {
-	loginData := user_models.Login{}
+	loginData := Login{}
 
 	if err := c.BodyParser(&loginData); err != nil {
 		return c.Status(400).JSON(fiber.Map{"error": "Invalid request format"})
 	}
 
-	user, err := uc.userRepository.GetUser(&user_models.User{Email: loginData.Email})
+	user, err := uc.userRepository.GetUser(&User{Email: loginData.Email})
 	if err != nil {
 		return c.Status(404).JSON(fiber.Map{"error": "User not found"})
 	}
@@ -74,14 +72,14 @@ func (uc UserController) Login(c *fiber.Ctx) error {
 // @Tags Users
 // @Accept  json
 // @Produce json
-// @Param   body             body user_models.User true "Request Body"
-// @Success 201 {object}     user_models.User "Created user"
+// @Param   body             body User true "Request Body"
+// @Success 201 {object}     User "Created user"
 // @Failure 400 {object}     fiber.Map "Invalid request format or validation error"
 // @Failure 500 {object}     fiber.Map "Failed to hash password or create user"
 // @Failure default {object} controller_common.SingleErrorMessage "An unexpected error response."
 // @Router  /register [post]
 func (uc UserController) CreateUser(c *fiber.Ctx) error {
-	user := &user_models.User{}
+	user := &User{}
 
 	if err := c.BodyParser(user); err != nil {
 		return c.Status(400).JSON(fiber.Map{"error": "Invalid request format"})
@@ -112,7 +110,7 @@ func (uc UserController) CreateUser(c *fiber.Ctx) error {
 // @Accept  json
 // @Produce json
 // @Param   id     path int true "User ID"
-// @Success 200 {object}     user_models.User "User details"
+// @Success 200 {object}     User "User details"
 // @Failure 400 {object}     fiber.Map "User ID is required"
 // @Failure 404 {object}     fiber.Map "User not found"
 // @Failure default {object} controller_common.SingleErrorMessage "An unexpected error response."
@@ -126,7 +124,7 @@ func (uc UserController) GetUser(c *fiber.Ctx) error {
 
 	id, _ := strconv.Atoi(userID)
 
-	foundUser, err := uc.userRepository.GetUser(&user_models.User{Model: gorm.Model{ID: uint(id)}})
+	foundUser, err := uc.userRepository.GetUser(&User{Model: gorm.Model{ID: uint(id)}})
 	if err != nil {
 		return c.Status(404).JSON(fiber.Map{"error": "User not found"})
 	}

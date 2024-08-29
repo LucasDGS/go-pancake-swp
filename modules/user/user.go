@@ -1,7 +1,8 @@
-package user_models
+package user
 
 import (
 	"errors"
+	"os"
 	"regexp"
 	"time"
 
@@ -17,6 +18,7 @@ type Login struct {
 type LoginResponse struct {
 	Token string `json:"token"`
 }
+
 type User struct {
 	gorm.Model `diff:"-" swaggerignore:"true"`
 	Email      string `json:"email" validate:"required,min=6,max=64"`
@@ -47,8 +49,6 @@ func isValidEmail(email string) bool {
 	return matched
 }
 
-const jwtSecret = "your_jwt_secret"
-
 func (u *User) GenerateJWT() (string, error) {
 	token := jwt.New(jwt.SigningMethodHS256)
 
@@ -57,7 +57,7 @@ func (u *User) GenerateJWT() (string, error) {
 	claims["email"] = u.Email
 	claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
 
-	tokenString, err := token.SignedString([]byte(jwtSecret))
+	tokenString, err := token.SignedString([]byte(os.Getenv("JWT_SECRET")))
 	if err != nil {
 		return "", err
 	}

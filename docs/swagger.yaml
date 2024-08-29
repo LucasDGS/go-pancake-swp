@@ -8,7 +8,7 @@ definitions:
   fiber.Map:
     additionalProperties: true
     type: object
-  user_models.Login:
+  user.Login:
     properties:
       email:
         maxLength: 64
@@ -21,12 +21,12 @@ definitions:
     - email
     - password
     type: object
-  user_models.LoginResponse:
+  user.LoginResponse:
     properties:
       token:
         type: string
     type: object
-  user_models.User:
+  user.User:
     properties:
       email:
         maxLength: 64
@@ -56,14 +56,14 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/user_models.Login'
+          $ref: '#/definitions/user.Login'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/user_models.LoginResponse'
+            $ref: '#/definitions/user.LoginResponse'
         "400":
           description: Invalid request format
           schema:
@@ -93,14 +93,14 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/user_models.User'
+          $ref: '#/definitions/user.User'
       produces:
       - application/json
       responses:
         "201":
           description: Created user
           schema:
-            $ref: '#/definitions/user_models.User'
+            $ref: '#/definitions/user.User'
         "400":
           description: Invalid request format or validation error
           schema:
@@ -132,7 +132,7 @@ paths:
         "200":
           description: User details
           schema:
-            $ref: '#/definitions/user_models.User'
+            $ref: '#/definitions/user.User'
         "400":
           description: User ID is required
           schema:

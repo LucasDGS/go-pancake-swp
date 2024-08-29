@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"github.com/LucasDGS/go-pancake-swp/middlewares"
-	"github.com/LucasDGS/go-pancake-swp/modules/user/user_controller"
+	"github.com/LucasDGS/go-pancake-swp/modules/user"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/swagger"
 )
@@ -23,7 +23,7 @@ func (r Router) SetupRouter(app *fiber.App) error {
 func SetupV1Routes(app *fiber.App) error {
 	log.Println("setting up v1 routes...")
 
-	userController, err := user_controller.NewUserController()
+	userController, err := user.NewUserController()
 	if err != nil {
 		return err
 	}

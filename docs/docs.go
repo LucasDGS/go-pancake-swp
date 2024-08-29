@@ -35,7 +35,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/user_models.Login"
+                            "$ref": "#/definitions/user.Login"
                         }
                     }
                 ],
@@ -43,7 +43,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/user_models.LoginResponse"
+                            "$ref": "#/definitions/user.LoginResponse"
                         }
                     },
                     "400": {
@@ -92,7 +92,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/user_models.User"
+                            "$ref": "#/definitions/user.User"
                         }
                     }
                 ],
@@ -100,7 +100,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created user",
                         "schema": {
-                            "$ref": "#/definitions/user_models.User"
+                            "$ref": "#/definitions/user.User"
                         }
                     },
                     "400": {
@@ -154,7 +154,7 @@ const docTemplate = `{
                     "200": {
                         "description": "User details",
                         "schema": {
-                            "$ref": "#/definitions/user_models.User"
+                            "$ref": "#/definitions/user.User"
                         }
                     },
                     "400": {
@@ -192,7 +192,7 @@ const docTemplate = `{
             "type": "object",
             "additionalProperties": true
         },
-        "user_models.Login": {
+        "user.Login": {
             "type": "object",
             "required": [
                 "email",
@@ -210,7 +210,7 @@ const docTemplate = `{
                 }
             }
         },
-        "user_models.LoginResponse": {
+        "user.LoginResponse": {
             "type": "object",
             "properties": {
                 "token": {
@@ -218,7 +218,7 @@ const docTemplate = `{
                 }
             }
         },
-        "user_models.User": {
+        "user.User": {
             "type": "object",
             "required": [
                 "email",
